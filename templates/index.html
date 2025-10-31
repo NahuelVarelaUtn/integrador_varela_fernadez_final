@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<!-- Para estilizar la pagina mayormente utilizamos la libreria flask agregando algunos pequeños detalles
+, pero el diseño y estilos es protagonizado por la libreria principalmente-->
+
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body">
+    <form class="row g-3 align-items-end" method="get">
+      <div class="col-12 col-md-3">
+        <label class="form-label">Nombre contiene</label>
+        <input type="text" name="nombre" value="{{ nombre }}" class="form-control" placeholder="e.g., argen">
+      </div>
+      <div class="col-12 col-md-3">
+        <label class="form-label">Continente</label>
+        <select name="continente" class="form-select">
+          <option value="">(todos)</option>
+          {% for c in ["América", "Europa", "Asia", "África", "Oceanía"] %}
+            <option value="{{ c }}" {% if continente==c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Pob. mín.</label>
+        <input type="text" name="minpop" value="{{ minpop }}" class="form-control" placeholder="0">
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Pob. máx.</label>
+        <input type="text" name="maxpop" value="{{ maxpop }}" class="form-control" placeholder="100000000">
+      </div>
+      <div class="col-12 col-md-2">
+        <label class="form-label">Ordenar por</label>
+        <select name="sort" class="form-select">
+          {% for k in ["nombre","poblacion","superficie"] %}
+            <option value="{{ k }}" {% if sort==k %}selected{% endif %}>{{ k }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Sentido</label>
+        <select name="asc" class="form-select">
+          <option value="1" {% if asc=="1" %}selected{% endif %}>Ascendente</option>
+          <option value="0" {% if asc=="0" %}selected{% endif %}>Descendente</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-2">
+        <button class="btn btn-primary w-100">Aplicar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if stats %}
+<div class="row g-3 mb-3">
+  <div class="col-12 col-md-3">
+    <div class="stat-card">
+      <div class="stat-label">Mayor población</div>
+      <div class="stat-value">{{ stats.mayor_poblacion.nombre }}</div>
+      <div class="stat-sub">{{ "{:,}".format(stats.mayor_poblacion.poblacion) }}</div>
+    </div>
+  </div>
+  <div class="col-12 col-md-3">
+    <div class="stat-card">
+      <div class="stat-label">Menor población</div>
+      <div class="stat-value">{{ stats.menor_poblacion.nombre }}</div>
+      <div class="stat-sub">{{ "{:,}".format(stats.menor_poblacion.poblacion) }}</div>
+    </div>
+  </div>
+  <div class="col-12 col-md-3">
+    <div class="stat-card">
+      <div class="stat-label">Prom. población</div>
+      <div class="stat-value">{{ "{:,.2f}".format(stats.promedio_poblacion) }}</div>
+    </div>
+  </div>
+  <div class="col-12 col-md-3">
+    <div class="stat-card">
+      <div class="stat-label">Prom. superficie</div>
+      <div class="stat-value">{{ "{:,.2f}".format(stats.promedio_superficie) }}</div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="table-responsive shadow-sm">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Nombre</th>
+        <th class="text-end">Población</th>
+        <th class="text-end">Superficie (km²)</th>
+        <th>Continente</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in paises %}
+      <tr>
+        <td>{{ p.nombre }}</td>
+        <td class="text-end">{{ "{:,}".format(p.poblacion) }}</td>
+        <td class="text-end">{{ "{:,}".format(p.superficie) }}</td>
+        <td>{{ p.continente }}</td>
+      </tr>
+      {% endfor %}
+      {% if not paises %}
+      <tr><td colspan="4" class="text-center text-muted py-4">Sin resultados</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

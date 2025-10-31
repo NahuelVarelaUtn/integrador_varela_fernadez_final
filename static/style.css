@@ -1,0 +1,25 @@
+/* Estilos suaves para tarjetas y tipografía */
+.stat-card{
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.stat-label{
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+.stat-value{
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+}
+.stat-sub{
+  font-size: 0.95rem;
+  color: #374151;
+}
+table{
+  border-radius: 10px;
+  overflow: hidden;
+}
